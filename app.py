@@ -15,7 +15,7 @@ CORS(app)
 
 # Initialize OpenAI and Notion API
 api_key = os.getenv('API_KEY')
-client = OpenAI(api_key)
+client = OpenAI()
 notion_api = os.getenv('NOTION_API_KEY')
 notion_database_id = os.getenv('NOTION_DATABASE_ID')
 
