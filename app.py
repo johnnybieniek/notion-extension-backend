@@ -76,6 +76,7 @@ def generate_shopping_data(page_url):
     completion = client.chat.completions.create(
         model="gpt-4o",
         messages=[
+            {"role": "system", "content": "You are an AI assistant that helps people find information. Return your anser in JSON format as specified in the prompt."},
             {"role": "user", "content": prompt}
         ]
     )
@@ -138,6 +139,7 @@ def process_article():
     elif category == 'research':
         data = process_research(page_url)
     elif category == 'shopping':
+        print("shopping help about to begin")
         data = process_shopping(page_url)
     else:
         return jsonify({"error": "Unsupported category"}), 400
