@@ -111,7 +111,7 @@ def process_research(page_url):
     date = datetime.now(timezone.utc).isoformat()
     data = {
         "Title": {"title": [{"text": {"content": research_data['title']}}]},
-        "Tags": {"select": [{"name": research_data['tags']}]},
+        "Tags": {"select": {"name": research_data['tags']}},
         "TL;DR": {"rich_text": [{"text": {"content": research_data['tldr']}}]},
         "Relevance": {"multi_select": [{"name": "Unassigned"}]},
         "Link": {"url": page_url},
