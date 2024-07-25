@@ -72,6 +72,7 @@ def generate_shopping_data(page_url):
         "urgency": "Medium",
         "description": "This is a short description of the item."
     }}
+    Do not include any other text in the response.
     """
     completion = client.chat.completions.create(
         model="gpt-4o",
