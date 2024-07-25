@@ -56,7 +56,7 @@ def generate_research_data(page_url):
 
 def generate_shopping_data(page_url):
     prompt = f"""
-    Evaluate the page {page_url} and extract the following information:
+    Evaluate the page"""+page_url+""" and extract the following information:
     1. Name of the item
     2. Price of the item
     3. URL to the item
@@ -66,7 +66,7 @@ def generate_shopping_data(page_url):
     {{
         "name": "Example Item",
         "price": "$100",
-        "url": "{page_url}",
+        "url": """+page_url+""",
         "urgency": "Medium",
         "description": "This is a short description of the item."
     }}
@@ -122,6 +122,7 @@ def process_article():
     content = request.json
     page_url = content.get('url')
     category = content.get('category')
+    print('Category:', category)
     database_id = database_ids.get(category)
 
     if not database_id:
