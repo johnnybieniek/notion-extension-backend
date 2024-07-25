@@ -15,8 +15,8 @@ app = Flask(__name__)
 CORS(app)  # Enable CORS
 
 # Initialize OpenAI and Notion API
-api_key = os.getenv('API_KEY')
-client = OpenAI(api_key)
+api_key = os.getenv('OPENAI_API_KEY')
+client = OpenAI()
 notion_api = os.getenv('NOTION_API_KEY')
 
 database_ids = {
