@@ -60,14 +60,14 @@ def generate_shopping_data(page_url):
     prompt = f"""
     Evaluate the page"""+page_url+""" and extract the following information:
     1. Name of the item (as short as possible to understand the item)
-    2. Price of the item
+    2. Price of the item(as a number)
     3. URL to the item
     4. Based on what the item is, evaluate the urgency as "Low", "Medium", or "High"
     5. A short description of the item
     Return the information in JSON format. Example response:
     {
         "name": "Example Item",
-        "price": "$100",
+        "price": "100",
         "url": """+page_url+""",
         "urgency": "Medium",
         "description": "This is a short description of the item."
