@@ -34,9 +34,9 @@ headers = {
 def generate_research_data(page_url):
     prompt = f"""
     As a senior researcher, extract the following information from this article {page_url} and return it in JSON format:
-    1. Title
-    2. Tags (choose one of the following: Other, Research paper, Article, Book)
-    3. TL;DR (a concise summary of what's in the link)
+    1. Title (as short as possible to understand the item - if the link is to a book, include the book title)
+    2. Tags (choose one of the following: Other, Research paper, Article, Book - depending on what makes the most sense)
+    3. TL;DR (a concise summary of what's in the link - article, book, or research paper summary - if the link is to a book include a short description of what the book is about) 
     4. Relevance
     Example response:
     {{
@@ -45,10 +45,12 @@ def generate_research_data(page_url):
         "tldr": "This is a brief summary.",
         "relevance": "This article is highly relevant for research purposes because..."
     }}
+    Do not include any other text in the response. Do not put the word json before the {{ and after the }}
     """
     completion = client.chat.completions.create(
         model="gpt-4o",
         messages=[
+            {"role": "system", "content": "You aresenior reseacher with a pH.D. Return your answer in JSON format as specified in the prompt."},
             {"role": "user", "content": prompt}
         ]
     )
