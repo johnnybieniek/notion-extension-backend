@@ -81,7 +81,11 @@ def generate_shopping_data(page_url):
         ]
     )
     result = completion.choices[0].message.content.strip()
-    return result
+    print("result from GPT-4O:", result)
+    
+    # Parse the result to JSON
+    result_json = json.loads(result)
+    return result_json
    
 
 def create_page(data: dict, database_id: str):
