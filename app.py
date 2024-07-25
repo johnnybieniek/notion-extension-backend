@@ -54,8 +54,12 @@ def generate_research_data(page_url):
             {"role": "user", "content": prompt}
         ]
     )
-    result = json.loads(completion.choices[0].message.content.strip())
-    return result
+    result = completion.choices[0].message.content.strip()
+    print("result from GPT-4o:", result)
+    
+    # Parse the result to JSON
+    result_json = json.loads(result)
+    return result_json
     
 
 def generate_shopping_data(page_url):
@@ -84,7 +88,7 @@ def generate_shopping_data(page_url):
         ]
     )
     result = completion.choices[0].message.content.strip()
-    print("result from GPT-4O:", result)
+    print("result from GPT-4o:", result)
     
     # Parse the result to JSON
     result_json = json.loads(result)
@@ -107,7 +111,7 @@ def process_research(page_url):
     date = datetime.now(timezone.utc).isoformat()
     data = {
         "Title": {"title": [{"text": {"content": research_data['title']}}]},
-        "Tags": {"multi_select": [{"name": research_data['tags']}]},
+        "Tags": {"select": [{"name": research_data['tags']}]},
         "TL;DR": {"rich_text": [{"text": {"content": research_data['tldr']}}]},
         "Relevance": {"multi_select": [{"name": "Unassigned"}]},
         "Link": {"url": page_url},
