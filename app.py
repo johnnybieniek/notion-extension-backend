@@ -80,7 +80,7 @@ def generate_shopping_data(page_url):
             {"role": "user", "content": prompt}
         ]
     )
-    result = json.loads(completion.choices[0].message.content.strip())
+    result = completion.choices[0].message.content.strip()
     return result
    
 
