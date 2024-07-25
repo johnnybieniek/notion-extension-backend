@@ -58,26 +58,26 @@ def generate_research_data(page_url):
 
 def generate_shopping_data(page_url):
     prompt = f"""
-    Evaluate the page"""+page_url+""" and extract the following information:
+    Evaluate the page {page_url} and extract the following information:
     1. Name of the item (as short as possible to understand the item)
-    2. Price of the item(as a number)
+    2. Price of the item (as a number)
     3. URL to the item
     4. Based on what the item is, evaluate the urgency as "Low", "Medium", or "High"
     5. A short description of the item
     Return the information in JSON format. Example response:
-    {
+    {{
         "name": "Example Item",
-        "price": "100",
-        "url": """+page_url+""",
+        "price": 100,
+        "url": "{page_url}",
         "urgency": "Medium",
         "description": "This is a short description of the item."
-    }
-    Do not include any other text in the response. Do not put the word json before the { and after the }.
+    }}
+    Do not include any other text in the response. Do not put the word json before the {{ and after the }}.
     """
     completion = client.chat.completions.create(
         model="gpt-4o",
         messages=[
-            {"role": "system", "content": "You are an AI assistant that helps people find information. Return your anser in JSON format as specified in the prompt."},
+            {"role": "system", "content": "You are an AI assistant that helps people find information. Return your answer in JSON format as specified in the prompt."},
             {"role": "user", "content": prompt}
         ]
     )
@@ -116,9 +116,13 @@ def process_research(page_url):
 def process_shopping(page_url):
     shopping_data = generate_shopping_data(page_url)
     date = datetime.now(timezone.utc).isoformat()
+    
+    # Ensure price is a number
+    price_value = float(shopping_data['price'])
+    
     data = {
         "Name": {"title": [{"text": {"content": shopping_data['name']}}]},
-        "Price": {"rich_text": [{"text": {"content": shopping_data['price']}}]},
+        "Price": {"number": price_value},  # Use the number type for price
         "URL": {"url": page_url},
         "Date": {"date": {"start": date}},
         "Urgency": {"multi_select": [{"name": shopping_data['urgency']}]},
