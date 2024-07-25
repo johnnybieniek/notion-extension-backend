@@ -52,7 +52,9 @@ def generate_research_data(page_url):
             {"role": "user", "content": prompt}
         ]
     )
-    return json.loads(completion.choices[0].message.content.strip())
+    result = json.loads(completion.choices[0].message.content.strip())
+    return result
+    
 
 def generate_shopping_data(page_url):
     prompt = f"""
@@ -77,7 +79,9 @@ def generate_shopping_data(page_url):
             {"role": "user", "content": prompt}
         ]
     )
-    return json.loads(completion.choices[0].message.content.strip())
+    result = json.loads(completion.choices[0].message.content.strip())
+    return result
+   
 
 def create_page(data: dict, database_id: str):
     url = f"https://api.notion.com/v1/pages"
