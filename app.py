@@ -31,6 +31,34 @@ headers = {
     "Content-Type": "application/json",
 }
 
+def generate_personal_data(page_url):
+    prompt = f"""
+    As a senior assistant, extract the following information from this webpage {page_url} and return it in JSON format:
+    1. Title (as short as possible to understand the webpage - if the link is to a book, include the book title, if a video - video title)
+    2. tl;dr (a concise summary of what's in the link - article, book, or research paper summary - if the link is to a book include a short description of what the book is about) 
+    3. Type (choose one of the following: Book, Article, Video, Other, Tweet) wjatever fits the most
+    Example response:
+    {{
+        "title": "Example Title",
+        "tldr": "This is a brief summary.",
+        "type": "Article"
+    }}
+    Do not include any other text in the response. Do not put the word json before the {{ and after the }}
+    """
+    completion = client.chat.completions.create(
+        model="gpt-4o",
+        messages=[
+            {"role": "system", "content": "You are a senior assistant with a pH.D. Return your answer in JSON format as specified in the prompt."},
+            {"role": "user", "content": prompt}
+        ]
+    )
+    result = completion.choices[0].message.content.strip()
+    print("result from GPT-4o:", result)
+    
+    # Parse the result to JSON
+    result_json = json.loads(result)
+    return result_json
+
 def generate_research_data(page_url):
     prompt = f"""
     As a senior researcher, extract the following information from this article {page_url} and return it in JSON format:
@@ -104,6 +132,18 @@ def create_page(data: dict, database_id: str):
     response = requests.post(url, headers=headers, json=payload)
     return response.json()
 
+def process_personal(page_url):
+    personal_data = generate_personal_data(page_url)
+    date = datetime.now(timezone.utc).isoformat()
+    data = {
+        "Title": {"title": [{"text": {"content": personal_data['title']}}]},
+        "Link": {"url": page_url},
+        "TL;DR": {"rich_text": [{"text": {"content": personal_data['tldr']}}]},
+        "Tags": {"select": {"name": personal_data['tags']}},
+        "Type": {"select": {"name": personal_data['type']}},
+        "Date": {"date": {"start": date}}
+    }
+    return data
 
 
 def process_research(page_url):
