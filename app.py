@@ -138,7 +138,7 @@ def process_personal(page_url):
     data = {
         "Title": {"title": [{"text": {"content": personal_data['title']}}]},
         "Link": {"url": page_url},
-        "TL;DR": {"rich_text": [{"text": {"content": personal_data['tldr']}}]},
+        "tl;dr": {"rich_text": [{"text": {"content": personal_data['tldr']}}]},
         "Type": {"select": {"name": personal_data['type']}},
         "Date": {"date": {"start": date}}
     }
