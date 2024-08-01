@@ -190,7 +190,7 @@ def process_article():
 
     # Determine the processing function based on category
     if category == 'personal':
-        data = print("hello, error!")
+        data = process_personal(page_url)
     elif category == 'research':
         data = process_research(page_url)
     elif category == 'shopping':
